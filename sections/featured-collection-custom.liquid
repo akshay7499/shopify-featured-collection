@@ -1,28 +1,28 @@
 <section class="page-width">
 
-  <h1 class="collection-title">{{ collection.title }}</h1>
+  <h1 class="fc-collection-title">{{ collection.title }}</h1>
 
-  <div id="filter-bar" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
-    <select id="filter-tag">
+  <div id="fc-filter-bar" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+    <select id="fc-filter-tag">
       <option value="">All categories</option>
     </select>
-    <select id="sort-select">
+    <select id="fc-sort-select">
       <option value="">Default</option>
       <option value="price-asc">Price: Low to High</option>
       <option value="price-desc">Price: High to Low</option>
       <option value="title-asc">Name: A-Z</option>
       <option value="title-desc">Name: Z-A</option>
     </select>
-    <button id="clear-filters">Clear filters</button>
+    <button id="fc-clear-filters">Clear filters</button>
   </div>
 
-  <div id="product-grid">
-    <div class="grid" id="grid-container"></div>
+  <div id="fc-product-grid">
+    <div class="fc-grid" id="fc-grid-container"></div>
   </div>
 
-  <div id="loader">
-    <div class="skeleton-grid" id="skeleton-grid"></div>
-    <p id="end-message" style="display:none;">No more products</p>
+  <div id="fc-loader">
+    <div class="fc-skeleton-grid" id="fc-skeleton-grid"></div>
+    <p id="fc-end-message" style="display:none;">No more products</p>
   </div>
 
 </section>
@@ -40,13 +40,13 @@
   let activeSort = '';
   let normalDisplayedCount = 0;
 
-  const grid = document.getElementById('grid-container');
-  const loader = document.getElementById('loader');
-  const skeletonGrid = document.getElementById('skeleton-grid');
-  const endMessage = document.getElementById('end-message');
-  const filterTag = document.getElementById('filter-tag');
-  const sortSelect = document.getElementById('sort-select');
-  const clearBtn = document.getElementById('clear-filters');
+  const grid = document.getElementById('fc-grid-container');
+  const loader = document.getElementById('fc-loader');
+  const skeletonGrid = document.getElementById('fc-skeleton-grid');
+  const endMessage = document.getElementById('fc-end-message');
+  const filterTag = document.getElementById('fc-filter-tag');
+  const sortSelect = document.getElementById('fc-sort-select');
+  const clearBtn = document.getElementById('fc-clear-filters');
 
   const allTagsSet = new Set();
 
@@ -55,11 +55,11 @@
     skeletonGrid.innerHTML = '';
     for (let i = 0; i < count; i++) {
       skeletonGrid.innerHTML += `
-        <div class="skeleton-card">
-          <div class="skeleton skeleton-img"></div>
-          <div class="skeleton skeleton-title"></div>
-          <div class="skeleton skeleton-title short"></div>
-          <div class="skeleton skeleton-price"></div>
+        <div class="fc-skeleton-card">
+          <div class="fc-skeleton fc-skeleton-img"></div>
+          <div class="fc-skeleton fc-skeleton-title"></div>
+          <div class="fc-skeleton fc-skeleton-title fc-short"></div>
+          <div class="fc-skeleton fc-skeleton-price"></div>
         </div>`;
     }
     loader.style.display = 'block';
@@ -225,7 +225,7 @@
   /* ── Create product card ── */
   function createCard(product, featured) {
     const div = document.createElement('div');
-    div.className = 'card reveal';
+    div.className = 'fc-card fc-reveal';
     div.setAttribute('data-id', product.id);
 
     const image = product.images && product.images.length ? product.images[0].src : '';
@@ -235,13 +235,13 @@
 
     div.innerHTML = `
       <a href="/products/${product.handle}">
-        <div class="card-img-wrap">
+        <div class="fc-card-img-wrap">
           <img src="${image}" alt="${product.title}" loading="lazy" />
         </div>
-        <div class="card-info">
-          ${featured ? '<span class="featured-tag">⭐ Featured</span>' : ''}
+        <div class="fc-card-info">
+          ${featured ? '<span class="fc-featured-tag">Featured</span>' : ''}
           <h3>${product.title}</h3>
-          <p class="price">${price}</p>
+          <p class="fc-price">${price}</p>
         </div>
       </a>
     `;
@@ -293,22 +293,21 @@
 </script>
 
 <style>
-  .collection-title {
+  .fc-collection-title {
     margin-bottom: 20px;
   }
 
-  #filter-bar select,
-  #filter-bar button {
+  #fc-filter-bar select,
+  #fc-filter-bar button {
     padding: 8px 12px;
     border: 1px solid #ddd;
-    border-radius: 6px;
     background: #fff;
     font-size: 14px;
     cursor: pointer;
   }
 
-  #filter-bar select:focus,
-  #filter-bar button:hover {
+  #fc-filter-bar select:focus,
+  #fc-filter-bar button:hover {
     border-color: #00c9d4;
     outline: none;
   }
@@ -319,49 +318,49 @@
     box-shadow: unset !important;
   }
 
-  #clear-filters {
+  #fc-clear-filters {
     background: #f5f5f5;
   }
 
-  .grid {
+  .fc-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
   }
 
-  .skeleton-grid {
+  .fc-skeleton-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
     margin-top: 20px;
   }
 
-  .skeleton-card {
+  .fc-skeleton-card {
     border: 1px solid #eee;
     padding: 10px;
     border-radius: 4px;
   }
 
-  .skeleton {
+  .fc-skeleton {
     background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
     background-size: 200% 100%;
     animation: shimmer 1.4s infinite;
     border-radius: 4px;
   }
 
-  .skeleton-img   { width: 100%; height: 250px; margin-bottom: 10px; }
-  .skeleton-title { height: 16px; width: 80%; margin: 0 auto 8px; }
-  .skeleton-title.short { width: 55%; }
-  .skeleton-price { height: 14px; width: 40%; margin: 0 auto; }
+  .fc-skeleton-img   { width: 100%; height: 250px; margin-bottom: 10px; }
+  .fc-skeleton-title { height: 16px; width: 80%; margin: 0 auto 8px; }
+  .fc-skeleton-title.fc-short { width: 55%; }
+  .fc-skeleton-price { height: 14px; width: 40%; margin: 0 auto; }
 
   @keyframes shimmer {
     0%   { background-position: 200% 0; }
     100% { background-position: -200% 0; }
   }
 
-  #loader { padding: 20px 0; }
+  #fc-loader { padding: 20px 0; }
 
-  #end-message {
+  #fc-end-message {
     text-align: center;
     padding: 20px;
     color: #888;
@@ -369,7 +368,7 @@
   }
 
   /* ── Card ── */
-  .card {
+  .fc-card {
     border: 1px solid #eee;
     padding: 10px;
     text-align: center;
@@ -377,68 +376,71 @@
     opacity: 0;
   }
 
-  .card:hover { transform: translateY(-5px); }
+  .fc-card:hover { transform: translateY(-5px); }
 
-  .card a {
+  .fc-card a {
     text-decoration: none;
     color: #000;
   }
 
-  .card-img-wrap {
+  .fc-card-img-wrap {
     width: 100%;
     aspect-ratio: 1;
     overflow: hidden;
   }
 
-  .card-img-wrap img {
+  .fc-card-img-wrap img {
     width: 100%;
     height: 100%;
     object-fit: contain;
   }
 
-  .card-info {
+  .fc-card-info {
     padding: 10px 0 4px;
   }
 
-  .card-info h3 {
+  .fc-card-info h3 {
     margin: 6px 0 4px;
     font-size: 14px;
     font-weight: 600;
   }
 
-  .card-info .price {
+  .fc-card-info .fc-price {
     margin: 0;
     font-size: 14px;
     color: #333;
   }
 
-  .featured-tag {
+  .fc-featured-tag {
     display: inline-block;
     background: #fff7e0;
     color: #b45309;
-    font-size: 11px;
+    font-size: 16px;
     font-weight: 700;
     padding: 2px 8px;
-    border-radius: 99px;
     margin-bottom: 4px;
     text-transform: uppercase;
     letter-spacing: 0.03em;
-  }
+    width: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+ }
 
   @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  .card.reveal { animation: fadeInUp 0.5s ease forwards; }
+  .fc-card.fc-reveal { animation: fadeInUp 0.5s ease forwards; }
 
   @media screen and (max-width: 749px) {
-    .grid,
-    .skeleton-grid {
+    .fc-grid,
+    .fc-skeleton-grid {
       grid-template-columns: repeat(2, 1fr);
       gap: 10px;
     }
-    #filter-bar {
+    #fc-filter-bar {
       flex-direction: column;
       align-items: unset !important;
     }
